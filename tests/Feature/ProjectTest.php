@@ -67,3 +67,32 @@ test('can list projects', function () {
         $response->assertSee($project->title);
     }
 });
+
+test('can show project', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $project = Project::factory()->for($user)->create();
+
+    $response = $this->get(route('projects.show', $project->id));
+
+    $response->assertStatus(200);
+    $response->assertSee($project->title);
+    $response->assertSee($project->customer);
+    $response->assertSee($project->description);
+});
+
+test('can delete project', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user);
+
+    $project = Project::factory()->for($user)->create();
+
+    $response = $this->delete(route('projects.destroy', $project->id));
+
+    $response->assertRedirect();
+    $response->assertSessionHas('success', 'Project deleted successfully.');
+    $this->assertDatabaseMissing('projects', [
+        'id' => $project->id,
+    ]);
+});
