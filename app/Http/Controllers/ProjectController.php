@@ -13,7 +13,7 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        //
+        return auth()->user()->projects()->paginate(10);
     }
 
     /**
@@ -29,7 +29,7 @@ class ProjectController extends Controller
      */
     public function store(StoreProjectRequest $request)
     {
-        Project::create($request->validated());
+        auth()->user()->projects()->create($request->validated());
 
         return redirect()->back()->with('success', 'Project created successfully.');
     }
@@ -55,7 +55,9 @@ class ProjectController extends Controller
      */
     public function update(UpdateProjectRequest $request, Project $project)
     {
-        //
+        $project->update($request->validated());
+
+        return redirect()->back()->with('success', 'Project updated successfully.');
     }
 
     /**
