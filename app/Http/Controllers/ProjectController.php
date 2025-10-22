@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use Inertia\Inertia;
 
 class ProjectController extends Controller
 {
@@ -13,7 +14,9 @@ class ProjectController extends Controller
      */
     public function index()
     {
-        return auth()->user()->projects()->paginate(10);
+        return Inertia::render('admin/projects/index', [
+            'projects' => auth()->user()->projects()->paginate(10),
+        ]);
     }
 
     /**
