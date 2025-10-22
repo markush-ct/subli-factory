@@ -45,7 +45,9 @@ export interface User {
 export interface Project {
     id: number;
     title: string;
+    customer:string;
     description: string;
+    due_date: string;
     created_at: string;
     updated_at: string;
     [key: string]: unknown;
